@@ -1,0 +1,31 @@
+{
+  "name": "spindle",
+  "version": "0.1.0",
+  "authors": [
+    "Yuri van der Meer"
+  ],
+  "license": "MIT",
+  "private": false,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "~2.1.9",
+    "underscore": "~1.5.2",
+    "jquery": "~2.0.3",
+    "backbone": "~1.1.0",
+    "handlebars": "~1.2.1"
+  },
+  "devDependencies": {
+    "blanket": "~1.1.5",
+    "chai": "~1.8.1",
+    "mocha": "1.13",
+    "sinon": "http://sinonjs.org/releases/sinon-1.7.3.js",
+    "sinon-chai": "~2.4.0"
+  }
+}
