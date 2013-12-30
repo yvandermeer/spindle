@@ -1,8 +1,12 @@
 {
   "name": "spindle",
-  "version": "0.1.0",
+  "version": "0.1.0-alpha.1",
   "description": "JavaScript logging library",
-  "main": "index.js",
+  "repository": {
+    "type": "git", 
+    "url": "https://github.com/yvandermeer/spindle"
+  },
+  "main": "spindle.js",
   "dependencies": {},
   "devDependencies": {
     "bower": "~1.2.8",
