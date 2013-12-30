@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "base.js",
+  "sourceRoot": "../../../coffee/spindle/handlers/",
+  "sources": [
+    "base.coffee"
+  ],
+  "names": [],
+  "mappings": "AAAA;CAAA,CAAA,CAAO,GAAP,CAAO,EAAC;CACJ,OAAA,YAAA;CAAA,EAAW,CAAX,GAAW,CAAX,GAAW;WAGL;CAEF;;CAAA,EAAO,EAAP,CAAsB,EAAP;;CAAf,EAEQ,GAAR,GAAS;CACL,GAAgB,CAAA,CAAM,EAAtB;CAAC,GAAA,EAAD,WAAA;UADI;CAFR,MAEQ;;CAFR;;CAND;CAAP,EAAO;CAAP"
+}

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en-us">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>AMD</title>
+            
+        <script src="../vendor/requirejs/require.js"></script>
+        <script>
+            require.config({
+                paths: {
+                    'underscore': '../vendor/underscore/underscore',
+                    'spindle': '../spindle'
+                },
+                shim: {
+                    'underscore': {
+                        exports: '_'
+                    }
+                }
+            });
+
+            require(['spindle'], function(Logger) {
+                var logger;
+                logger = Logger.get('foo.bar', true);
+                logger.setLevel(Logger.levels.DEBUG);
+                logger.debug('a debug message')();
+                logger.warning('a warning message')();
+            });
+        </script>
+    </head>
+
+    <body></body>
+</html>

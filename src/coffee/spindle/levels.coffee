@@ -14,4 +14,3 @@ define (require) ->
 
         @getLevelName: (level) ->
             _.invert(LogLevel.levels)[level]
-

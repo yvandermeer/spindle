@@ -1,10 +1,9 @@
 module.exports = (grunt) ->
 
     grunt.initConfig do ->
-        #staticBaseDir = 'src'
         dirs =
-            coffeescript: 'src'
-            javascriptGenerated: "dist"
+            coffeescript: 'src/coffee'
+            javascriptGenerated: "src/js"
         patterns =
             coffeescript: 'src/**/*.coffee'
             javascriptGenerated: "#{dirs.javascriptGenerated}/**/*.js"
@@ -23,11 +22,16 @@ module.exports = (grunt) ->
                 ext: '.js'
 
         connect:
-            server:
+            dev:
                 options:
                     port: 9001
-                    #base: 'test'
                     keepalive: true
+                    livereload: true
+
+        open:
+            all:
+                path: 'http://localhost:<%= connect.dev.options.port%>'
+                app: 'Google Chrome'
 
         watch:
             coffee:
@@ -42,6 +46,29 @@ module.exports = (grunt) ->
                 files: [
                     patterns.javascriptGenerated,
                 ]
+
+        requirejs:
+            compile:
+                options: do ->
+                    baseUrl = dirs.javascriptGenerated
+                    optimize = true
+
+                    baseUrl: baseUrl
+                    name: '../../vendor/almond/almond'
+                    include: [
+                        'spindle/main',
+                    ]
+                    exclude: [
+                        'underscore',
+                    ]
+                    paths:
+                        'underscore': '../../vendor/underscore/underscore'
+                    wrap:
+                        startFile: 'src/wrap/start.frag'
+                        endFile: 'src/wrap/end.frag'
+                    out: 'spindle.js'
+                    optimize: if optimize then 'uglify2' else 'none'
+                    preserveLicenseComments: not optimize
 
 
     # Based on https://github.com/gruntjs/grunt-contrib-watch#compiling-files-as-needed
@@ -61,6 +88,15 @@ module.exports = (grunt) ->
         onChange()
 
 
+    grunt.registerTask 'server', [
+        # Open before connect because connect uses keepalive at the moment
+        # so anything after connect wouldn't run
+        'open',
+        'connect',
+    ]
+
+    grunt.loadNpmTasks 'grunt-open'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks 'grunt-contrib-connect'
+    grunt.loadNpmTasks 'grunt-contrib-requirejs'
     grunt.loadNpmTasks 'grunt-contrib-watch'

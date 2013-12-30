@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "main.js",
+  "sourceRoot": "../../coffee/spindle/",
+  "sources": [
+    "main.coffee"
+  ],
+  "names": [],
+  "mappings": "AAAA;CAAA,CAAA,CAAO,GAAP,CAAO,EAAC;CACJ,KAAA,EAAA;CAAA,EAAS,CAAT,EAAA,CAAS,GAAA;CAAT,GACA,GAAA,GAAA;CAGA,KAAA,KAAO;CALX,EAAO;CAAP"
+}
