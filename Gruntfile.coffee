@@ -33,6 +33,12 @@ module.exports = (grunt) ->
                 path: 'http://localhost:<%= connect.dev.options.port%>'
                 app: 'Google Chrome'
 
+        uglify:
+
+            my_target:
+                files:
+                    'spindle-min.js': ['spindle.js']
+
         watch:
             coffee:
                 files: [patterns.coffeescript]
@@ -51,7 +57,7 @@ module.exports = (grunt) ->
             compile:
                 options: do ->
                     baseUrl = dirs.javascriptGenerated
-                    optimize = true
+                    optimize = false
 
                     baseUrl: baseUrl
                     name: '../../vendor/almond/almond'
@@ -70,6 +76,7 @@ module.exports = (grunt) ->
                     optimize: if optimize then 'uglify2' else 'none'
                     preserveLicenseComments: not optimize
 
+        clean: [dirs.javascriptGenerated]
 
     # Based on https://github.com/gruntjs/grunt-contrib-watch#compiling-files-as-needed
     changedFiles = Object.create(null)
@@ -95,8 +102,14 @@ module.exports = (grunt) ->
         'connect',
     ]
 
-    grunt.loadNpmTasks 'grunt-open'
+    grunt.registerTask 'buildjs', ['clean', 'coffee', 'requirejs']
+
+    grunt.registerTask 'build', ['requirejs', 'uglify']
+
+    grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks 'grunt-contrib-connect'
     grunt.loadNpmTasks 'grunt-contrib-requirejs'
+    grunt.loadNpmTasks 'grunt-contrib-uglify'
     grunt.loadNpmTasks 'grunt-contrib-watch'
+    grunt.loadNpmTasks 'grunt-open'

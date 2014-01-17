@@ -1,1 +1,803 @@
-!function(e,n){"function"==typeof define&&define.amd?define(["underscore"],function(e){return n({underscore:e})}):e.spindle={Logger:n({underscore:e._})}}(this,function(e){var n,t,r;return function(e){function o(e,n){return _.call(e,n)}function i(e,n){var t,r,o,i,l,s,u,c,a,p,f=n&&n.split("/"),d=m.map,h=d&&d["*"]||{};if(e&&"."===e.charAt(0))if(n){for(f=f.slice(0,f.length-1),e=f.concat(e.split("/")),c=0;c<e.length;c+=1)if(p=e[c],"."===p)e.splice(c,1),c-=1;else if(".."===p){if(1===c&&(".."===e[2]||".."===e[0]))break;c>0&&(e.splice(c-1,2),c-=2)}e=e.join("/")}else 0===e.indexOf("./")&&(e=e.substring(2));if((f||h)&&d){for(t=e.split("/"),c=t.length;c>0;c-=1){if(r=t.slice(0,c).join("/"),f)for(a=f.length;a>0;a-=1)if(o=d[f.slice(0,a).join("/")],o&&(o=o[r])){i=o,l=c;break}if(i)break;!s&&h&&h[r]&&(s=h[r],u=c)}!i&&s&&(i=s,l=u),i&&(t.splice(0,l,i),e=t.join("/"))}return e}function l(n,t){return function(){return d.apply(e,b.call(arguments,0).concat([n,t]))}}function s(e){return function(n){return i(n,e)}}function u(e){return function(n){v[e]=n}}function c(n){if(o(y,n)){var t=y[n];delete y[n],w[n]=!0,f.apply(e,t)}if(!o(v,n)&&!o(w,n))throw new Error("No "+n);return v[n]}function a(e){var n,t=e?e.indexOf("!"):-1;return t>-1&&(n=e.substring(0,t),e=e.substring(t+1,e.length)),[n,e]}function p(e){return function(){return m&&m.config&&m.config[e]||{}}}var f,d,h,g,v={},y={},m={},w={},_=Object.prototype.hasOwnProperty,b=[].slice;h=function(e,n){var t,r=a(e),o=r[0];return e=r[1],o&&(o=i(o,n),t=c(o)),o?e=t&&t.normalize?t.normalize(e,s(n)):i(e,n):(e=i(e,n),r=a(e),o=r[0],e=r[1],o&&(t=c(o))),{f:o?o+"!"+e:e,n:e,pr:o,p:t}},g={require:function(e){return l(e)},exports:function(e){var n=v[e];return"undefined"!=typeof n?n:v[e]={}},module:function(e){return{id:e,uri:"",exports:v[e],config:p(e)}}},f=function(n,t,r,i){var s,a,p,f,d,m,_=[],b=typeof r;if(i=i||n,"undefined"===b||"function"===b){for(t=!t.length&&r.length?["require","exports","module"]:t,d=0;d<t.length;d+=1)if(f=h(t[d],i),a=f.f,"require"===a)_[d]=g.require(n);else if("exports"===a)_[d]=g.exports(n),m=!0;else if("module"===a)s=_[d]=g.module(n);else if(o(v,a)||o(y,a)||o(w,a))_[d]=c(a);else{if(!f.p)throw new Error(n+" missing "+a);f.p.load(f.n,l(i,!0),u(a),{}),_[d]=v[a]}p=r?r.apply(v[n],_):void 0,n&&(s&&s.exports!==e&&s.exports!==v[n]?v[n]=s.exports:p===e&&m||(v[n]=p))}else n&&(v[n]=r)},n=t=d=function(n,t,r,o,i){return"string"==typeof n?g[n]?g[n](t):c(h(n,t).f):(n.splice||(m=n,t.splice?(n=t,t=r,r=null):n=e),t=t||function(){},"function"==typeof r&&(r=o,o=i),o?f(e,n,t,r):setTimeout(function(){f(e,n,t,r)},4),d)},d.config=function(e){return m=e,m.deps&&d(m.deps,m.callback),d},n._defined=v,r=function(e,n,t){n.splice||(t=n,n=[]),o(v,e)||o(y,e)||(y[e]=[e,n,t])},r.amd={jQuery:!0}}(),r("../../vendor/almond/almond",function(){}),function(){r("spindle/levels",["require","underscore"],function(e){var n,t;return t=e("underscore"),n=function(){function e(){}return e.levels={CRITICAL:50,ERROR:40,WARNING:30,INFO:20,DEBUG:10,NOTSET:0},e.getLevelName=function(n){return t.invert(e.levels)[n]},e}()})}.call(this),function(){r("spindle/handlers/base",["require","../levels"],function(e){var n,t;return t=e("../levels"),n=function(){function e(){}return e.prototype.level=t.levels.NOTSET,e.prototype.handle=function(e){return e.level>=this.level?this.emit(e):void 0},e}()})}.call(this),function(){var e={}.hasOwnProperty,n=function(n,t){function r(){this.constructor=n}for(var o in t)e.call(t,o)&&(n[o]=t[o]);return r.prototype=t.prototype,n.prototype=new r,n.__super__=t.prototype,n},t=[].slice;r("spindle/handlers/consolehandler",["require","underscore","./base","../levels"],function(e){var r,o,i,l;return l=e("underscore"),o=e("./base"),i=e("../levels"),r=function(e){function r(){null==r.useBind&&(r.useBind=this.checkForBind()),this.mappings[i.levels.CRITICAL]="error",this.mappings[i.levels.ERROR]="error",this.mappings[i.levels.WARNING]="warn",this.mappings[i.levels.INFO]="info",this.mappings[i.levels.DEBUG]="log"}return n(r,e),r.useBind=void 0,r.prototype.stream=window.console,r.prototype.mappings={},r.prototype.checkForBind=function(){return l.isFunction(this.stream.log.bind)},r.prototype.getMethodForLevel=function(e){var n;return null!=(n=this.mappings[e])?n:"log"},r.prototype.emit=function(e){var n,o,i;return o=this.getMethodForLevel(e.level),n=l.toArray(e.messages),n.splice(0,0,"["+e.name+"]"),r.useBind?(i=this.stream[o]).bind.apply(i,[this.stream].concat(t.call(n))):this.stream[o](n)},r}(o)})}.call(this),function(){var e={}.hasOwnProperty,n=function(n,t){function r(){this.constructor=n}for(var o in t)e.call(t,o)&&(n[o]=t[o]);return r.prototype=t.prototype,n.prototype=new r,n.__super__=t.prototype,n};r("spindle/logger",["require","underscore","./handlers/consolehandler","./levels"],function(e){var t,r,o,i,l,s;return s=e("underscore"),t=e("./handlers/consolehandler"),r=e("./levels"),o=function(){function e(n,o){this.name=n,this.returnFirstHandler=null!=o?o:!1,e._instances[this.name]=this,this.level=r.levels.NOTSET,this.handlers=[],this.addHandler(new t)}return e.levels=r.levels,e.getLevelName=r.getLevelName,e._instances={},e._fixupParents=function(e){var n,t,r,o,i;for(r=e.name,n=r.lastIndexOf("."),o=null;n>0&&!o;)i=r.slice(0,n),(t=this._instances[i])?o=t:t=null,n=i.lastIndexOf(".");return o||(o=this.root),e.parent=o},e.get=function(n,t){var r;return n?((r=this._instances[n])&&null!=r?r.returnFirstHandler=t:r=function(e,n,t){t.prototype=e.prototype;var r=new t,o=e.apply(r,n);return Object(o)===o?o:r}(e,arguments,function(){}),this._fixupParents(r),r):this.root},e.prototype.disabledLevel=0,e.prototype.addHandler=function(e){return this.handlers.push(e)},e.prototype.handle=function(e){var n;return this.returnFirstHandler?(n=s.first(this.handlers).handle(e),this.callHandlers(e,s.rest(this.handlers)),s.isFunction(n)||(n=this.noop),n):(this.callHandlers(e),this.noop)},e.prototype.callHandlers=function(e,n){var t,r,o,i,l;for(null==n&&(n=this.handlers),l=[],o=0,i=n.length;i>o;o++)t=n[o],l.push("function"==typeof(r=t.handle(e))?r():void 0);return l},e.prototype.setLevel=function(e){this.level=e},e.prototype.isEnabledFor=function(e){return this.disabledLevel>=e?!1:e>=this.getEffectiveLevel()},e.prototype.getEffectiveLevel=function(){var e;for(e=this;e;){if(e.level)return e.level;e=e.parent}return r.levels.NOTSET},e.prototype.noop=function(){},e.prototype._log=function(e,n){var t;if(!this.isEnabledFor(e))return this.noop;try{return this.handle({name:this.name,level:e,messages:n})}catch(r){return t=r,"undefined"!=typeof console&&null!==console&&"function"==typeof console.warn&&console.warn(""+t),this.noop}},e.prototype.debug=function(){return this._log(r.levels.DEBUG,arguments)},e.prototype.info=function(){return this._log(r.levels.INFO,arguments)},e.prototype.warning=function(){return this._log(r.levels.WARNING,arguments)},e.prototype.error=function(){return this._log(r.levels.ERROR,arguments)},e.prototype.critical=function(){return this._log(r.levels.CRITICAL,arguments)},e.prototype.log=function(){return this.debug.apply(this,arguments)},e}(),i=function(e){function t(){t.__super__.constructor.call(this,"root")}return n(t,e),t}(o),l=new i,l.setLevel(r.levels.WARNING),o.root=l,o})}.call(this),function(){r("spindle/compat",["require","./logger"],function(e){var n,t;return n=e("./logger"),window.g0j0||(window.g0j0={}),(t=window.g0j0).logging||(t.logging={}),function(e){var t,r,o;e.getLogger=function(e){return n.get(e)},o=n.levels;for(t in o)r=o[t],e[t]=r;return e.configure||(e.configure=function(){}),e.configure()}(window.g0j0.logging)})}.call(this),function(){r("spindle/main",["require","./logger","./compat"],function(e){var n;return n=e("./logger"),e("./compat"),n})}.call(this),r("underscore",function(){return e.underscore}),t("spindle/main")});
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // Allow using this built library as an AMD module in another project
+        // Because almond cannot dynamically load dependencies itself, we have 
+        // to require the dependencies up front and pass it to the factory.
+        define(['underscore'], function(_) {
+            return factory({
+                underscore: _
+            });
+        });
+    } else {
+        // Browser globals case
+        root.spindle = {
+            Logger: factory({
+                underscore: root._
+            })
+        };
+    }
+}(this, function (dependencies) {
+
+/**
+ * almond 0.2.7 Copyright (c) 2011-2012, The Dojo Foundation All Rights Reserved.
+ * Available via the MIT or new BSD license.
+ * see: http://github.com/jrburke/almond for details
+ */
+//Going sloppy to avoid 'use strict' string cost, but strict practices should
+//be followed.
+/*jslint sloppy: true */
+/*global setTimeout: false */
+
+var requirejs, require, define;
+(function (undef) {
+    var main, req, makeMap, handlers,
+        defined = {},
+        waiting = {},
+        config = {},
+        defining = {},
+        hasOwn = Object.prototype.hasOwnProperty,
+        aps = [].slice;
+
+    function hasProp(obj, prop) {
+        return hasOwn.call(obj, prop);
+    }
+
+    /**
+     * Given a relative module name, like ./something, normalize it to
+     * a real name that can be mapped to a path.
+     * @param {String} name the relative name
+     * @param {String} baseName a real name that the name arg is relative
+     * to.
+     * @returns {String} normalized name
+     */
+    function normalize(name, baseName) {
+        var nameParts, nameSegment, mapValue, foundMap,
+            foundI, foundStarMap, starI, i, j, part,
+            baseParts = baseName && baseName.split("/"),
+            map = config.map,
+            starMap = (map && map['*']) || {};
+
+        //Adjust any relative paths.
+        if (name && name.charAt(0) === ".") {
+            //If have a base name, try to normalize against it,
+            //otherwise, assume it is a top-level require that will
+            //be relative to baseUrl in the end.
+            if (baseName) {
+                //Convert baseName to array, and lop off the last part,
+                //so that . matches that "directory" and not name of the baseName's
+                //module. For instance, baseName of "one/two/three", maps to
+                //"one/two/three.js", but we want the directory, "one/two" for
+                //this normalization.
+                baseParts = baseParts.slice(0, baseParts.length - 1);
+
+                name = baseParts.concat(name.split("/"));
+
+                //start trimDots
+                for (i = 0; i < name.length; i += 1) {
+                    part = name[i];
+                    if (part === ".") {
+                        name.splice(i, 1);
+                        i -= 1;
+                    } else if (part === "..") {
+                        if (i === 1 && (name[2] === '..' || name[0] === '..')) {
+                            //End of the line. Keep at least one non-dot
+                            //path segment at the front so it can be mapped
+                            //correctly to disk. Otherwise, there is likely
+                            //no path mapping for a path starting with '..'.
+                            //This can still fail, but catches the most reasonable
+                            //uses of ..
+                            break;
+                        } else if (i > 0) {
+                            name.splice(i - 1, 2);
+                            i -= 2;
+                        }
+                    }
+                }
+                //end trimDots
+
+                name = name.join("/");
+            } else if (name.indexOf('./') === 0) {
+                // No baseName, so this is ID is resolved relative
+                // to baseUrl, pull off the leading dot.
+                name = name.substring(2);
+            }
+        }
+
+        //Apply map config if available.
+        if ((baseParts || starMap) && map) {
+            nameParts = name.split('/');
+
+            for (i = nameParts.length; i > 0; i -= 1) {
+                nameSegment = nameParts.slice(0, i).join("/");
+
+                if (baseParts) {
+                    //Find the longest baseName segment match in the config.
+                    //So, do joins on the biggest to smallest lengths of baseParts.
+                    for (j = baseParts.length; j > 0; j -= 1) {
+                        mapValue = map[baseParts.slice(0, j).join('/')];
+
+                        //baseName segment has  config, find if it has one for
+                        //this name.
+                        if (mapValue) {
+                            mapValue = mapValue[nameSegment];
+                            if (mapValue) {
+                                //Match, update name to the new value.
+                                foundMap = mapValue;
+                                foundI = i;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (foundMap) {
+                    break;
+                }
+
+                //Check for a star map match, but just hold on to it,
+                //if there is a shorter segment match later in a matching
+                //config, then favor over this star map.
+                if (!foundStarMap && starMap && starMap[nameSegment]) {
+                    foundStarMap = starMap[nameSegment];
+                    starI = i;
+                }
+            }
+
+            if (!foundMap && foundStarMap) {
+                foundMap = foundStarMap;
+                foundI = starI;
+            }
+
+            if (foundMap) {
+                nameParts.splice(0, foundI, foundMap);
+                name = nameParts.join('/');
+            }
+        }
+
+        return name;
+    }
+
+    function makeRequire(relName, forceSync) {
+        return function () {
+            //A version of a require function that passes a moduleName
+            //value for items that may need to
+            //look up paths relative to the moduleName
+            return req.apply(undef, aps.call(arguments, 0).concat([relName, forceSync]));
+        };
+    }
+
+    function makeNormalize(relName) {
+        return function (name) {
+            return normalize(name, relName);
+        };
+    }
+
+    function makeLoad(depName) {
+        return function (value) {
+            defined[depName] = value;
+        };
+    }
+
+    function callDep(name) {
+        if (hasProp(waiting, name)) {
+            var args = waiting[name];
+            delete waiting[name];
+            defining[name] = true;
+            main.apply(undef, args);
+        }
+
+        if (!hasProp(defined, name) && !hasProp(defining, name)) {
+            throw new Error('No ' + name);
+        }
+        return defined[name];
+    }
+
+    //Turns a plugin!resource to [plugin, resource]
+    //with the plugin being undefined if the name
+    //did not have a plugin prefix.
+    function splitPrefix(name) {
+        var prefix,
+            index = name ? name.indexOf('!') : -1;
+        if (index > -1) {
+            prefix = name.substring(0, index);
+            name = name.substring(index + 1, name.length);
+        }
+        return [prefix, name];
+    }
+
+    /**
+     * Makes a name map, normalizing the name, and using a plugin
+     * for normalization if necessary. Grabs a ref to plugin
+     * too, as an optimization.
+     */
+    makeMap = function (name, relName) {
+        var plugin,
+            parts = splitPrefix(name),
+            prefix = parts[0];
+
+        name = parts[1];
+
+        if (prefix) {
+            prefix = normalize(prefix, relName);
+            plugin = callDep(prefix);
+        }
+
+        //Normalize according
+        if (prefix) {
+            if (plugin && plugin.normalize) {
+                name = plugin.normalize(name, makeNormalize(relName));
+            } else {
+                name = normalize(name, relName);
+            }
+        } else {
+            name = normalize(name, relName);
+            parts = splitPrefix(name);
+            prefix = parts[0];
+            name = parts[1];
+            if (prefix) {
+                plugin = callDep(prefix);
+            }
+        }
+
+        //Using ridiculous property names for space reasons
+        return {
+            f: prefix ? prefix + '!' + name : name, //fullName
+            n: name,
+            pr: prefix,
+            p: plugin
+        };
+    };
+
+    function makeConfig(name) {
+        return function () {
+            return (config && config.config && config.config[name]) || {};
+        };
+    }
+
+    handlers = {
+        require: function (name) {
+            return makeRequire(name);
+        },
+        exports: function (name) {
+            var e = defined[name];
+            if (typeof e !== 'undefined') {
+                return e;
+            } else {
+                return (defined[name] = {});
+            }
+        },
+        module: function (name) {
+            return {
+                id: name,
+                uri: '',
+                exports: defined[name],
+                config: makeConfig(name)
+            };
+        }
+    };
+
+    main = function (name, deps, callback, relName) {
+        var cjsModule, depName, ret, map, i,
+            args = [],
+            callbackType = typeof callback,
+            usingExports;
+
+        //Use name if no relName
+        relName = relName || name;
+
+        //Call the callback to define the module, if necessary.
+        if (callbackType === 'undefined' || callbackType === 'function') {
+            //Pull out the defined dependencies and pass the ordered
+            //values to the callback.
+            //Default to [require, exports, module] if no deps
+            deps = !deps.length && callback.length ? ['require', 'exports', 'module'] : deps;
+            for (i = 0; i < deps.length; i += 1) {
+                map = makeMap(deps[i], relName);
+                depName = map.f;
+
+                //Fast path CommonJS standard dependencies.
+                if (depName === "require") {
+                    args[i] = handlers.require(name);
+                } else if (depName === "exports") {
+                    //CommonJS module spec 1.1
+                    args[i] = handlers.exports(name);
+                    usingExports = true;
+                } else if (depName === "module") {
+                    //CommonJS module spec 1.1
+                    cjsModule = args[i] = handlers.module(name);
+                } else if (hasProp(defined, depName) ||
+                           hasProp(waiting, depName) ||
+                           hasProp(defining, depName)) {
+                    args[i] = callDep(depName);
+                } else if (map.p) {
+                    map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
+                    args[i] = defined[depName];
+                } else {
+                    throw new Error(name + ' missing ' + depName);
+                }
+            }
+
+            ret = callback ? callback.apply(defined[name], args) : undefined;
+
+            if (name) {
+                //If setting exports via "module" is in play,
+                //favor that over return value and exports. After that,
+                //favor a non-undefined return value over exports use.
+                if (cjsModule && cjsModule.exports !== undef &&
+                        cjsModule.exports !== defined[name]) {
+                    defined[name] = cjsModule.exports;
+                } else if (ret !== undef || !usingExports) {
+                    //Use the return value from the function.
+                    defined[name] = ret;
+                }
+            }
+        } else if (name) {
+            //May just be an object definition for the module. Only
+            //worry about defining if have a module name.
+            defined[name] = callback;
+        }
+    };
+
+    requirejs = require = req = function (deps, callback, relName, forceSync, alt) {
+        if (typeof deps === "string") {
+            if (handlers[deps]) {
+                //callback in this case is really relName
+                return handlers[deps](callback);
+            }
+            //Just return the module wanted. In this scenario, the
+            //deps arg is the module name, and second arg (if passed)
+            //is just the relName.
+            //Normalize module name, if it contains . or ..
+            return callDep(makeMap(deps, callback).f);
+        } else if (!deps.splice) {
+            //deps is a config object, not an array.
+            config = deps;
+            if (callback.splice) {
+                //callback is an array, which means it is a dependency list.
+                //Adjust args if there are dependencies
+                deps = callback;
+                callback = relName;
+                relName = null;
+            } else {
+                deps = undef;
+            }
+        }
+
+        //Support require(['a'])
+        callback = callback || function () {};
+
+        //If relName is a function, it is an errback handler,
+        //so remove it.
+        if (typeof relName === 'function') {
+            relName = forceSync;
+            forceSync = alt;
+        }
+
+        //Simulate async callback;
+        if (forceSync) {
+            main(undef, deps, callback, relName);
+        } else {
+            //Using a non-zero value because of concern for what old browsers
+            //do, and latest browsers "upgrade" to 4 if lower value is used:
+            //http://www.whatwg.org/specs/web-apps/current-work/multipage/timers.html#dom-windowtimers-settimeout:
+            //If want a value immediately, use require('id') instead -- something
+            //that works in almond on the global level, but not guaranteed and
+            //unlikely to work in other AMD implementations.
+            setTimeout(function () {
+                main(undef, deps, callback, relName);
+            }, 4);
+        }
+
+        return req;
+    };
+
+    /**
+     * Just drops the config on the floor, but returns req in case
+     * the config return value is used.
+     */
+    req.config = function (cfg) {
+        config = cfg;
+        if (config.deps) {
+            req(config.deps, config.callback);
+        }
+        return req;
+    };
+
+    /**
+     * Expose module registry for debugging and tooling
+     */
+    requirejs._defined = defined;
+
+    define = function (name, deps, callback) {
+
+        //This module may not have dependencies
+        if (!deps.splice) {
+            //deps is not an array, so probably means
+            //an object literal or factory function for
+            //the value. Adjust args.
+            callback = deps;
+            deps = [];
+        }
+
+        if (!hasProp(defined, name) && !hasProp(waiting, name)) {
+            waiting[name] = [name, deps, callback];
+        }
+    };
+
+    define.amd = {
+        jQuery: true
+    };
+}());
+
+define("../../vendor/almond/almond", function(){});
+
+(function() {
+  define('spindle/levels',['require','underscore'],function(require) {
+    var LogLevel, _;
+    _ = require('underscore');
+    return LogLevel = (function() {
+      function LogLevel() {}
+
+      LogLevel.levels = {
+        CRITICAL: 50,
+        ERROR: 40,
+        WARNING: 30,
+        INFO: 20,
+        DEBUG: 10,
+        NOTSET: 0
+      };
+
+      LogLevel.getLevelName = function(level) {
+        return _.invert(LogLevel.levels)[level];
+      };
+
+      return LogLevel;
+
+    })();
+  });
+
+}).call(this);
+
+/*
+//@ sourceMappingURL=levels.js.map
+*/;
+(function() {
+  define('spindle/handlers/base',['require','../levels'],function(require) {
+    var LogHandler, LogLevel;
+    LogLevel = require('../levels');
+    return LogHandler = (function() {
+      function LogHandler() {}
+
+      LogHandler.prototype.level = LogLevel.levels.NOTSET;
+
+      LogHandler.prototype.handle = function(record) {
+        if (record.level >= this.level) {
+          return this.emit(record);
+        }
+      };
+
+      return LogHandler;
+
+    })();
+  });
+
+}).call(this);
+
+/*
+//@ sourceMappingURL=base.js.map
+*/;
+(function() {
+  var __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    __slice = [].slice;
+
+  define('spindle/handlers/consolehandler',['require','underscore','./base','../levels'],function(require) {
+    var ConsoleHandler, LogHandler, LogLevel, _;
+    _ = require('underscore');
+    LogHandler = require('./base');
+    LogLevel = require('../levels');
+    return ConsoleHandler = (function(_super) {
+      __extends(ConsoleHandler, _super);
+
+      ConsoleHandler.useBind = void 0;
+
+      ConsoleHandler.prototype.stream = window.console;
+
+      ConsoleHandler.prototype.mappings = {};
+
+      function ConsoleHandler() {
+        if (ConsoleHandler.useBind == null) {
+          ConsoleHandler.useBind = this.checkForBind();
+        }
+        this.mappings[LogLevel.levels.CRITICAL] = 'error';
+        this.mappings[LogLevel.levels.ERROR] = 'error';
+        this.mappings[LogLevel.levels.WARNING] = 'warn';
+        this.mappings[LogLevel.levels.INFO] = 'info';
+        this.mappings[LogLevel.levels.DEBUG] = 'log';
+      }
+
+      ConsoleHandler.prototype.checkForBind = function() {
+        return _.isFunction(this.stream['log'].bind);
+      };
+
+      ConsoleHandler.prototype.getMethodForLevel = function(level) {
+        var _ref;
+        return (_ref = this.mappings[level]) != null ? _ref : 'log';
+      };
+
+      ConsoleHandler.prototype.emit = function(record) {
+        var messages, method, _ref;
+        method = this.getMethodForLevel(record.level);
+        messages = _.toArray(record.messages);
+        messages.splice(0, 0, "[" + record.name + "]");
+        if (ConsoleHandler.useBind) {
+          return (_ref = this.stream[method]).bind.apply(_ref, [this.stream].concat(__slice.call(messages)));
+        } else {
+          return this.stream[method](messages);
+        }
+      };
+
+      return ConsoleHandler;
+
+    })(LogHandler);
+  });
+
+}).call(this);
+
+/*
+//@ sourceMappingURL=consolehandler.js.map
+*/;
+(function() {
+  var __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  define('spindle/logger',['require','underscore','./handlers/consolehandler','./levels'],function(require) {
+    var ConsoleHandler, LogLevel, Logger, RootLogger, root, _;
+    _ = require('underscore');
+    ConsoleHandler = require('./handlers/consolehandler');
+    LogLevel = require('./levels');
+    Logger = (function() {
+      Logger.levels = LogLevel.levels;
+
+      Logger.getLevelName = LogLevel.getLevelName;
+
+      Logger._instances = {};
+
+      Logger._fixupParents = function(logger) {
+        var i, instance, name, rv, substr;
+        name = logger.name;
+        i = name.lastIndexOf('.');
+        rv = null;
+        while (i > 0 && !rv) {
+          substr = name.slice(0, i);
+          if ((instance = this._instances[substr])) {
+            rv = instance;
+          } else {
+            instance = null;
+          }
+          i = substr.lastIndexOf('.');
+        }
+        if (!rv) {
+          rv = this.root;
+        }
+        return logger.parent = rv;
+      };
+
+      Logger.get = function(name, returnFirstHandler) {
+        var instance;
+        if (!name) {
+          return this.root;
+        }
+        if ((instance = this._instances[name]) && (instance != null)) {
+          instance.returnFirstHandler = returnFirstHandler;
+        } else {
+          instance = (function(func, args, ctor) {
+            ctor.prototype = func.prototype;
+            var child = new ctor, result = func.apply(child, args);
+            return Object(result) === result ? result : child;
+          })(Logger, arguments, function(){});
+        }
+        this._fixupParents(instance);
+        return instance;
+      };
+
+      Logger.prototype.disabledLevel = 0;
+
+      function Logger(name, returnFirstHandler) {
+        this.name = name;
+        this.returnFirstHandler = returnFirstHandler != null ? returnFirstHandler : false;
+        Logger._instances[this.name] = this;
+        this.level = LogLevel.levels.NOTSET;
+        this.handlers = [];
+        this.addHandler(new ConsoleHandler);
+      }
+
+      Logger.prototype.addHandler = function(handler) {
+        return this.handlers.push(handler);
+      };
+
+      Logger.prototype.handle = function(record) {
+        /*
+        In "returnFirstHandler" mode, every hander is already invoked
+        except the first one. The first one is returned, so it can be
+        invoked by the code originally calling the log.
+        
+        This is primarily to allow for correct file names and line numbers
+        in the browsers debug console (using ConsoleHandler).
+        */
+
+        var rv;
+        if (this.returnFirstHandler) {
+          rv = _.first(this.handlers).handle(record);
+          this.callHandlers(record, _.rest(this.handlers));
+          if (!_.isFunction(rv)) {
+            rv = this.noop;
+          }
+          return rv;
+        } else {
+          this.callHandlers(record);
+          return this.noop;
+        }
+      };
+
+      Logger.prototype.callHandlers = function(record, handlers) {
+        var handler, _base, _i, _len, _results;
+        if (handlers == null) {
+          handlers = this.handlers;
+        }
+        _results = [];
+        for (_i = 0, _len = handlers.length; _i < _len; _i++) {
+          handler = handlers[_i];
+          _results.push(typeof (_base = handler.handle(record)) === "function" ? _base() : void 0);
+        }
+        return _results;
+      };
+
+      Logger.prototype.setLevel = function(level) {
+        this.level = level;
+      };
+
+      Logger.prototype.isEnabledFor = function(level) {
+        if (this.disabledLevel >= level) {
+          return false;
+        }
+        return level >= this.getEffectiveLevel();
+      };
+
+      Logger.prototype.getEffectiveLevel = function() {
+        /*
+        Returns the level of the first logger in the hierarchy that is set
+        */
+
+        var logger;
+        logger = this;
+        while (logger) {
+          if (logger.level) {
+            return logger.level;
+          }
+          logger = logger.parent;
+        }
+        return LogLevel.levels.NOTSET;
+      };
+
+      Logger.prototype.noop = function() {};
+
+      Logger.prototype._log = function(level, messages) {
+        var e;
+        if (!this.isEnabledFor(level)) {
+          return this.noop;
+        }
+        try {
+          return this.handle({
+            name: this.name,
+            level: level,
+            messages: messages
+          });
+        } catch (_error) {
+          e = _error;
+          if (typeof console !== "undefined" && console !== null) {
+            if (typeof console.warn === "function") {
+              console.warn("" + e);
+            }
+          }
+          return this.noop;
+        }
+      };
+
+      Logger.prototype.debug = function() {
+        return this._log(LogLevel.levels.DEBUG, arguments);
+      };
+
+      Logger.prototype.info = function() {
+        return this._log(LogLevel.levels.INFO, arguments);
+      };
+
+      Logger.prototype.warning = function() {
+        return this._log(LogLevel.levels.WARNING, arguments);
+      };
+
+      Logger.prototype.error = function() {
+        return this._log(LogLevel.levels.ERROR, arguments);
+      };
+
+      Logger.prototype.critical = function() {
+        return this._log(LogLevel.levels.CRITICAL, arguments);
+      };
+
+      Logger.prototype.log = function() {
+        return this.debug.apply(this, arguments);
+      };
+
+      return Logger;
+
+    })();
+    RootLogger = (function(_super) {
+      __extends(RootLogger, _super);
+
+      function RootLogger() {
+        RootLogger.__super__.constructor.call(this, 'root');
+      }
+
+      return RootLogger;
+
+    })(Logger);
+    root = new RootLogger;
+    root.setLevel(LogLevel.levels.WARNING);
+    Logger.root = root;
+    return Logger;
+  });
+
+}).call(this);
+
+/*
+//@ sourceMappingURL=logger.js.map
+*/;
+(function() {
+  define('spindle/compat',['require','./logger'],function(require) {
+    var Logger, _base;
+    Logger = require('./logger');
+    window.g0j0 || (window.g0j0 = {});
+    (_base = window.g0j0).logging || (_base.logging = {});
+    return (function(ns) {
+      var name, value, _ref;
+      ns.getLogger = function(name) {
+        return Logger.get(name);
+      };
+      _ref = Logger.levels;
+      for (name in _ref) {
+        value = _ref[name];
+        ns[name] = value;
+      }
+      ns.configure || (ns.configure = function() {});
+      return ns.configure();
+    })(window.g0j0.logging);
+  });
+
+}).call(this);
+
+/*
+//@ sourceMappingURL=compat.js.map
+*/;
+(function() {
+  define('spindle/main',['require','./logger','./compat'],function(require) {
+    var Logger;
+    Logger = require('./logger');
+    require('./compat');
+    return Logger;
+  });
+
+}).call(this);
+
+/*
+//@ sourceMappingURL=main.js.map
+*/;
+    define('underscore', function() {
+        return dependencies.underscore;
+    });
+
+    // The modules for your project will be inlined above
+    // this snippet. Ask almond to synchronously require the
+    // module value for 'main' here and return it as the
+    // value to use for the public API for the built file.
+    return require('spindle/main');
+}));
