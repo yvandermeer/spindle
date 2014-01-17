@@ -7,6 +7,7 @@ module.exports = (grunt) ->
         patterns =
             coffeescript: 'src/**/*.coffee'
             javascriptGenerated: "#{dirs.javascriptGenerated}/**/*.js"
+            html: "examples/**/*.html"
 
         pkg: grunt.file.readJSON('package.json')
 
@@ -51,6 +52,7 @@ module.exports = (grunt) ->
                     livereload: true
                 files: [
                     patterns.javascriptGenerated,
+                    patterns.html,
                 ]
 
         requirejs:

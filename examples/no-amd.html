@@ -7,16 +7,23 @@
         <script src="../vendor/underscore/underscore.js"></script>
         <script src="../spindle-min.js"></script>
         <script>
-            (function() {
+            (function(Logger) {
                 var logger;
 
-                logger = spindle.Logger.get('foo.bar', true);
-                logger.setLevel(spindle.Logger.levels.DEBUG);
-                logger.debug('a debug message')();
-                logger.warning('a warning message')();
-            })();
+                // For example, set the default level to INFO
+                Logger.get().setLevel(Logger.levels.INFO);
+
+                // Info messages are now output to the console:
+                Logger.get('foo').info('an info message');
+
+                // But debug messages are not:
+                Logger.get('foo').debug('a debug message that you won\'t see');
+
+            })(spindle.Logger);
         </script>
     </head>
 
-    <body></body>
+    <body>
+        <p>Open your browser’s console to see the output.</p>
+    </body>
 </html>
