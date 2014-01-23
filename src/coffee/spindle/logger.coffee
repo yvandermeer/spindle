@@ -44,7 +44,7 @@ define (require) ->
 
         disabledLevel: 0 # level for which logger is disabled
 
-        constructor: (@name, @returnFirstHandler=false) ->
+        constructor: (@name, @returnFirstHandler=true) ->
             #console.warn "Creating logger for #{@name}", arguments
             Logger._instances[@name] = @
 
@@ -54,7 +54,7 @@ define (require) ->
             @addHandler new ConsoleHandler
 
         addHandler: (handler) ->
-            @handlers.push handler
+            @handlers.push(handler)
 
         handle: (record) ->
             ###
@@ -66,13 +66,13 @@ define (require) ->
             in the browsers debug console (using ConsoleHandler).
             ###
             if @returnFirstHandler
-                rv = _.first(@handlers).handle(record)
-                @callHandlers record, _.rest @handlers
+                rv = _(@handlers).first().handle(record)
+                @callHandlers(record, _.rest(@handlers))
                 # Make sure we return a callable function
-                rv = @noop if not _.isFunction(rv)
+                rv = @noop if not _(rv).isFunction()
                 return rv
             else
-                @callHandlers record
+                @callHandlers(record)
                 return @noop
 
         callHandlers: (record, handlers) ->
@@ -99,7 +99,7 @@ define (require) ->
             #console.log '...'
 
         _log: (level, messages) ->
-            return @noop if not @isEnabledFor level
+            return @noop if not @isEnabledFor(level)
             try
                 @handle
                     name: @name
@@ -115,7 +115,7 @@ define (require) ->
         error: -> @_log LogLevel.levels.ERROR, arguments
         critical: -> @_log LogLevel.levels.CRITICAL, arguments
 
-        log: -> @debug arguments...
+        log: -> @debug(arguments...)
 
 
     class RootLogger extends Logger
@@ -124,7 +124,7 @@ define (require) ->
 
 
     root = new RootLogger
-    root.setLevel LogLevel.levels.WARNING
+    root.setLevel(LogLevel.levels.WARNING)
     Logger.root = root
 
     return Logger

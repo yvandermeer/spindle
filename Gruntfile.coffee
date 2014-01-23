@@ -7,7 +7,7 @@ module.exports = (grunt) ->
         patterns =
             coffeescript: 'src/**/*.coffee'
             javascriptGenerated: "#{dirs.javascriptGenerated}/**/*.js"
-            html: "examples/**/*.html"
+            html: "example/**/*.html"
 
         pkg: grunt.file.readJSON('package.json')
 
@@ -106,7 +106,7 @@ module.exports = (grunt) ->
 
     grunt.registerTask 'buildjs', ['clean', 'coffee', 'requirejs']
 
-    grunt.registerTask 'build', ['requirejs', 'uglify']
+    grunt.registerTask 'build', ['buildjs', 'uglify']
 
     grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-contrib-coffee'

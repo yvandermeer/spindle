@@ -56,7 +56,7 @@
 
       function Logger(name, returnFirstHandler) {
         this.name = name;
-        this.returnFirstHandler = returnFirstHandler != null ? returnFirstHandler : false;
+        this.returnFirstHandler = returnFirstHandler != null ? returnFirstHandler : true;
         Logger._instances[this.name] = this;
         this.level = LogLevel.levels.NOTSET;
         this.handlers = [];
@@ -79,9 +79,9 @@
 
         var rv;
         if (this.returnFirstHandler) {
-          rv = _.first(this.handlers).handle(record);
+          rv = _(this.handlers).first().handle(record);
           this.callHandlers(record, _.rest(this.handlers));
-          if (!_.isFunction(rv)) {
+          if (!_(rv).isFunction()) {
             rv = this.noop;
           }
           return rv;

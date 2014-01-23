@@ -517,7 +517,7 @@ define("../../vendor/almond/almond", function(){});
       }
 
       ConsoleHandler.prototype.checkForBind = function() {
-        return _.isFunction(this.stream['log'].bind);
+        return _(this.stream['log'].bind).isFunction();
       };
 
       ConsoleHandler.prototype.getMethodForLevel = function(level) {
@@ -528,7 +528,7 @@ define("../../vendor/almond/almond", function(){});
       ConsoleHandler.prototype.emit = function(record) {
         var messages, method, _ref;
         method = this.getMethodForLevel(record.level);
-        messages = _.toArray(record.messages);
+        messages = _(record.messages).toArray();
         messages.splice(0, 0, "[" + record.name + "]");
         if (ConsoleHandler.useBind) {
           return (_ref = this.stream[method]).bind.apply(_ref, [this.stream].concat(__slice.call(messages)));
@@ -605,7 +605,7 @@ define("../../vendor/almond/almond", function(){});
 
       function Logger(name, returnFirstHandler) {
         this.name = name;
-        this.returnFirstHandler = returnFirstHandler != null ? returnFirstHandler : false;
+        this.returnFirstHandler = returnFirstHandler != null ? returnFirstHandler : true;
         Logger._instances[this.name] = this;
         this.level = LogLevel.levels.NOTSET;
         this.handlers = [];
@@ -628,9 +628,9 @@ define("../../vendor/almond/almond", function(){});
 
         var rv;
         if (this.returnFirstHandler) {
-          rv = _.first(this.handlers).handle(record);
+          rv = _(this.handlers).first().handle(record);
           this.callHandlers(record, _.rest(this.handlers));
-          if (!_.isFunction(rv)) {
+          if (!_(rv).isFunction()) {
             rv = this.noop;
           }
           return rv;

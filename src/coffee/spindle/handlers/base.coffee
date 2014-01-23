@@ -7,4 +7,4 @@ define (require) ->
         level: LogLevel.levels.NOTSET
 
         handle: (record) ->
-            @emit record if record.level >= @level
+            @emit(record) if record.level >= @level

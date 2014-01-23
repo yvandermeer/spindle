@@ -29,7 +29,7 @@
       }
 
       ConsoleHandler.prototype.checkForBind = function() {
-        return _.isFunction(this.stream['log'].bind);
+        return _(this.stream['log'].bind).isFunction();
       };
 
       ConsoleHandler.prototype.getMethodForLevel = function(level) {
@@ -40,7 +40,7 @@
       ConsoleHandler.prototype.emit = function(record) {
         var messages, method, _ref;
         method = this.getMethodForLevel(record.level);
-        messages = _.toArray(record.messages);
+        messages = _(record.messages).toArray();
         messages.splice(0, 0, "[" + record.name + "]");
         if (ConsoleHandler.useBind) {
           return (_ref = this.stream[method]).bind.apply(_ref, [this.stream].concat(__slice.call(messages)));

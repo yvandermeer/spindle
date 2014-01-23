@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title>No AMD</title>
-        
+
         <script src="../vendor/underscore/underscore.js"></script>
         <script src="../spindle-min.js"></script>
         <script>
@@ -14,10 +14,10 @@
                 Logger.get().setLevel(Logger.levels.INFO);
 
                 // Info messages are now output to the console:
-                Logger.get('foo').info('an info message');
+                Logger.get('foo').info('an info message')();
 
                 // But debug messages are not:
-                Logger.get('foo').debug('a debug message that you won\'t see');
+                Logger.get('foo').debug('a debug message that you won\'t see')();
 
             })(spindle.Logger);
         </script>

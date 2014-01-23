@@ -20,18 +20,18 @@ define (require) ->
             @mappings[LogLevel.levels.INFO] = 'info'
             @mappings[LogLevel.levels.DEBUG] = 'log'
 
-        checkForBind: -> _.isFunction @stream['log'].bind
+        checkForBind: -> _(@stream['log'].bind).isFunction()
 
         getMethodForLevel: (level) ->
             @mappings[level] ? 'log'
 
         emit: (record) ->
-            method = @getMethodForLevel record.level
-            messages = _.toArray(record.messages)
+            method = @getMethodForLevel(record.level)
+            messages = _(record.messages).toArray()
             messages.splice(0, 0, "[#{record.name}]")
             if ConsoleHandler.useBind
                 # Helps to make the log message shows up in the console as if
                 # originating from the calling code
-                @stream[method].bind @stream, messages...
+                @stream[method].bind(@stream, messages...)
             else
-                @stream[method] messages
+                @stream[method](messages)

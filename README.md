@@ -28,11 +28,26 @@ Usages
 ------
 Spindle works both with and without AMD (RequireJS).
 
-For more information, see the [examples](examples) directory.
+For more information, see the [examples](example).
 
 
 Changelog
 ---------
+
+**0.2**
+
+* `returnFirstHandler` now defaults to `true` instead of `false`:
+
+    ```coffee
+    # old API:
+    Logger.get('foo').debug('call from spindle.js')
+    Logger.get('foo', true).debug('call from your code')()
+    # new API:
+    Logger.get('foo').debug('call from your code')()
+    Logger.get('foo').debug('this does nothing') # simple returns a function to be called
+    Logger.get('foo', false).debug('call from spindle.js')
+    ```
+
 
 **0.1**
 

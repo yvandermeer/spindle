@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title>AMD</title>
-            
+
         <script src="../vendor/requirejs/require.js"></script>
         <script>
             require.config({
@@ -24,10 +24,10 @@
                 Logger.get().setLevel(Logger.levels.INFO);
 
                 // Info messages are now output to the console:
-                Logger.get('foo').info('an info message');
+                Logger.get('foo').info('an info message')();
 
                 // But debug messages are not:
-                Logger.get('foo').debug('a debug message that you won\'t see');
+                Logger.get('foo').debug('a debug message that you won\'t see')();
             });
         </script>
     </head>
