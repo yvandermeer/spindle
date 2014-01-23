@@ -58,3 +58,9 @@ TODO
 ----
 * Create tests
 * Formatters
+
+
+Credits
+-------
+
+`spindle.js` started as part of the [Goeie Jongens](http://goeiejongens.nl/) HTML5 toolkit.
