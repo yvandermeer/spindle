@@ -6,7 +6,8 @@ define (require) ->
     window.g0j0.logging or= {}
 
     do (ns=window.g0j0.logging) ->
-        ns.getLogger = (name) -> Logger.get(name)
+        ns.getLogger = (name) ->
+            Logger.get(name)
 
         # Copy log levels to top-level namespace
         ns[name] = value for name, value of Logger.levels
