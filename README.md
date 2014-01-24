@@ -34,6 +34,10 @@ For more information, see the [examples](example).
 Changelog
 ---------
 
+**0.2.1**
+
+* Fix: the `returnFirstHandler` is now only explicitly set when actually passed
+
 **0.2**
 
 * `returnFirstHandler` now defaults to `true` instead of `false`:
