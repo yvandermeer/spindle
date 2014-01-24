@@ -40,7 +40,9 @@
           return this.root;
         }
         if ((instance = this._instances[name]) && (instance != null)) {
-          instance.returnFirstHandler = returnFirstHandler;
+          if (returnFirstHandler != null) {
+            instance.returnFirstHandler = returnFirstHandler;
+          }
         } else {
           instance = (function(func, args, ctor) {
             ctor.prototype = func.prototype;

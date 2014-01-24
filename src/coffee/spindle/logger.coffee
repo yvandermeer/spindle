@@ -35,7 +35,8 @@ define (require) ->
             # Even if we get an existing instance, make sure we set the
             # "returnFirstHandler" property as requested
             if (instance = @_instances[name]) and instance?
-                instance.returnFirstHandler = returnFirstHandler
+                instance.returnFirstHandler = returnFirstHandler \
+                        if returnFirstHandler?
             else
                 instance = new Logger arguments...
 
