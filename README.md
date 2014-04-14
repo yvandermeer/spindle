@@ -36,6 +36,7 @@ Changelog
 
 **0.2.1 (under development)**
 
+* Fixed the path to the JavaScript source maps in spindle.js
 * Fix: the `returnFirstHandler` is now only explicitly set when actually passed
 
 **0.2**

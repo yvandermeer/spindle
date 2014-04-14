@@ -459,7 +459,7 @@ define("../../vendor/almond/almond", function(){});
 }).call(this);
 
 /*
-//@ sourceMappingURL=levels.js.map
+//@ sourceMappingURL=src/js/spindle/levels.js.map
 */;
 (function() {
   define('spindle/handlers/base',['require','../levels'],function(require) {
@@ -484,7 +484,7 @@ define("../../vendor/almond/almond", function(){});
 }).call(this);
 
 /*
-//@ sourceMappingURL=base.js.map
+//@ sourceMappingURL=src/js/spindle/base.js.map
 */;
 (function() {
   var __hasProp = {}.hasOwnProperty,
@@ -545,7 +545,7 @@ define("../../vendor/almond/almond", function(){});
 }).call(this);
 
 /*
-//@ sourceMappingURL=consolehandler.js.map
+//@ sourceMappingURL=src/js/spindle/consolehandler.js.map
 */;
 (function() {
   var __hasProp = {}.hasOwnProperty,
@@ -752,7 +752,7 @@ define("../../vendor/almond/almond", function(){});
 }).call(this);
 
 /*
-//@ sourceMappingURL=logger.js.map
+//@ sourceMappingURL=src/js/spindle/logger.js.map
 */;
 (function() {
   define('spindle/compat',['require','./logger'],function(require) {
@@ -778,7 +778,7 @@ define("../../vendor/almond/almond", function(){});
 }).call(this);
 
 /*
-//@ sourceMappingURL=compat.js.map
+//@ sourceMappingURL=src/js/spindle/compat.js.map
 */;
 (function() {
   define('spindle/main',['require','./logger','./compat'],function(require) {
@@ -791,7 +791,7 @@ define("../../vendor/almond/almond", function(){});
 }).call(this);
 
 /*
-//@ sourceMappingURL=main.js.map
+//@ sourceMappingURL=src/js/spindle/main.js.map
 */;
     define('underscore', function() {
         return dependencies.underscore;

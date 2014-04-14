@@ -81,6 +81,19 @@ module.exports = (grunt) ->
           out: 'spindle.js'
           optimize: if optimize then 'uglify2' else 'none'
           preserveLicenseComments: not optimize
+          onBuildWrite: (moduleName, path, contents) ->
+            ###
+            Fix the path to the the JavaScript source maps
+            ###
+            if moduleName.indexOf('spindle/') is 0
+              regex = ///
+                ^(//@\s+sourceMappingURL=) # prefix
+                (.+)$ # path
+              ///m
+              prefix = 'src/js/spindle/'
+              contents = contents.replace(regex, "$1#{prefix}$2")
+            return contents
+
 
     clean: [dirs.javascriptGenerated]
 
