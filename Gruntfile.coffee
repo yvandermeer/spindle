@@ -22,6 +22,10 @@ module.exports = (grunt) ->
                 dest: dirs.javascriptGenerated
                 ext: '.js'
 
+        coffeelint:
+            options: grunt.file.readJSON('coffeelint.json')
+            app: ["#{dirs.coffeescript}/**/*.coffee"]
+
         connect:
             dev:
                 options:
@@ -108,6 +112,7 @@ module.exports = (grunt) ->
 
     grunt.registerTask 'build', ['buildjs', 'uglify']
 
+    grunt.loadNpmTasks 'grunt-coffeelint'
     grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks 'grunt-contrib-connect'
