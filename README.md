@@ -34,7 +34,7 @@ For more information, see the [examples](example).
 Changelog
 ---------
 
-**0.2.1**
+**0.2.1 (under development)**
 
 * Fix: the `returnFirstHandler` is now only explicitly set when actually passed
 
