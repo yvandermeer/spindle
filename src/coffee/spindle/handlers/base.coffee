@@ -1,10 +1,10 @@
 define (require) ->
-    LogLevel = require '../levels'
+  LogLevel = require '../levels'
 
 
-    class LogHandler
+  class LogHandler
 
-        level: LogLevel.levels.NOTSET
+    level: LogLevel.levels.NOTSET
 
-        handle: (record) ->
-            @emit(record) if record.level >= @level
+    handle: (record) ->
+      @emit(record) if record.level >= @level

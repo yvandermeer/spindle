@@ -1,6 +1,6 @@
 define (require) ->
-    Logger = require './logger'
-    require './compat'
+  Logger = require './logger'
+  require './compat'
 
 
-    return Logger
+  return Logger
