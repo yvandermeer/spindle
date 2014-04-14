@@ -3,11 +3,11 @@ module.exports = (grunt) ->
     grunt.initConfig do ->
         dirs =
             coffeescript: 'src/coffee'
-            javascriptGenerated: "src/js"
+            javascriptGenerated: 'src/js'
         patterns =
             coffeescript: 'src/**/*.coffee'
             javascriptGenerated: "#{dirs.javascriptGenerated}/**/*.js"
-            html: "example/**/*.html"
+            html: 'example/**/*.html'
 
         pkg: grunt.file.readJSON('package.json')
 
@@ -84,14 +84,16 @@ module.exports = (grunt) ->
 
         clean: [dirs.javascriptGenerated]
 
-    # Based on https://github.com/gruntjs/grunt-contrib-watch#compiling-files-as-needed
+    # Based on:
+    # https://github.com/gruntjs/grunt-contrib-watch#compiling-files-as-needed
     changedFiles = Object.create(null)
     onChange = grunt.util._.debounce ->
         filepaths = Object.keys(changedFiles)
 
         # Selectively compile changed CoffeeScript files
         cwd = grunt.config 'coffee.glob_to_multiple.cwd'
-        filepathsRelative = grunt.util._.map filepaths, (s) -> s.replace "#{cwd}/", ''
+        filepathsRelative = grunt.util._.map filepaths, (s) ->
+            s.replace "#{cwd}/", ''
         grunt.config 'coffee.glob_to_multiple.src', filepathsRelative
 
         changedFiles = Object.create(null)

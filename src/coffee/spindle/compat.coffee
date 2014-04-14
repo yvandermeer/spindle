@@ -5,7 +5,7 @@ define (require) ->
     window.g0j0 or= {}
     window.g0j0.logging or= {}
 
-    do (ns=window.g0j0.logging) ->
+    do (ns = window.g0j0.logging) ->
         ns.getLogger = (name) ->
             Logger.get(name)
 

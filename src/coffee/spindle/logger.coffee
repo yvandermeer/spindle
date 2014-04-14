@@ -45,9 +45,9 @@ define (require) ->
 
         disabledLevel: 0 # level for which logger is disabled
 
-        constructor: (@name, @returnFirstHandler=true) ->
+        constructor: (@name, @returnFirstHandler = true) ->
             #console.warn "Creating logger for #{@name}", arguments
-            Logger._instances[@name] = @
+            Logger._instances[@name] = this
 
             @level = LogLevel.levels.NOTSET
 
@@ -90,7 +90,7 @@ define (require) ->
             ###
             Returns the level of the first logger in the hierarchy that is set
             ###
-            logger = @
+            logger = this
             while logger
                 return logger.level if logger.level
                 logger = logger.parent
