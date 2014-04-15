@@ -1,38 +1,48 @@
 <!doctype html>
 <html lang="en-us">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <title>AMD</title>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>AMD</title>
 
-        <script src="../vendor/requirejs/require.js"></script>
-        <script>
-            require.config({
-                paths: {
-                    'underscore': '../vendor/underscore/underscore',
-                    'spindle': '../spindle-min'
-                },
-                shim: {
-                    'underscore': {
-                        exports: '_'
-                    }
-                }
-            });
+    <script src="../vendor/requirejs/require.js"></script>
+    <script>
+      require.config({
+        paths: {
+          'underscore': '../vendor/underscore/underscore',
+          //'spindle': '../spindle'
+        },
+        shim: {
+          'underscore': {
+            exports: '_'
+          }
+        },
+        baseUrl: '.',
+        packages: [
+          {
+            name: 'spindle',
+            location: '../src/js/spindle'
+          }
+        ]
 
-            require(['spindle'], function(Logger) {
+      });
 
-                // For example, set the default level to INFO
-                Logger.get().setLevel(Logger.levels.INFO);
+      require(['spindle'], function(Logger) {
 
-                // Info messages are now output to the console:
-                Logger.get('foo').info('an info message')();
+        g0j0.logging.getLogger('foo').setLevel(Logger.levels.DEBUG);
 
-                // But debug messages are not:
-                Logger.get('foo').debug('a debug message that you won\'t see')();
-            });
-        </script>
-    </head>
+        // For example, set the default level to INFO
+        Logger.get().setLevel(Logger.levels.INFO);
 
-    <body>
-        <p>Open your browser’s console to see the output.</p>
-    </body>
+        // Info messages are now output to the console:
+        Logger.get('foo').info('an info message')();
+
+        // But debug messages are not:
+        Logger.get('foo').debug('a debug message that you won\'t see')();
+      });
+    </script>
+  </head>
+
+  <body>
+    <p>Open your browser’s console to see the output.</p>
+  </body>
 </html>

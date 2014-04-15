@@ -1,29 +1,29 @@
 <!doctype html>
 <html lang="en-us">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <title>No AMD</title>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>No AMD</title>
 
-        <script src="../vendor/underscore/underscore.js"></script>
-        <script src="../spindle-min.js"></script>
-        <script>
-            (function(Logger) {
-                var logger;
+    <script src="../vendor/underscore/underscore.js"></script>
+    <script src="../spindle-min.js"></script>
+    <script>
+      (function(Logger) {
+        var logger;
 
-                // For example, set the default level to INFO
-                Logger.get().setLevel(Logger.levels.INFO);
+        // For example, set the default level to INFO
+        Logger.get().setLevel(Logger.levels.INFO);
 
-                // Info messages are now output to the console:
-                Logger.get('foo').info('an info message')();
+        // Info messages are now output to the console:
+        Logger.get('foo').info('an info message')();
 
-                // But debug messages are not:
-                Logger.get('foo').debug('a debug message that you won\'t see')();
+        // But debug messages are not:
+        Logger.get('foo').debug('a debug message that you won\'t see')();
 
-            })(spindle.Logger);
-        </script>
-    </head>
+      })(spindle.Logger);
+    </script>
+  </head>
 
-    <body>
-        <p>Open your browser’s console to see the output.</p>
-    </body>
+  <body>
+    <p>Open your browser’s console to see the output.</p>
+  </body>
 </html>
