@@ -1,25 +1,77 @@
 module.exports = (grunt) ->
 
+  require('jit-grunt')(grunt)
+
+
+  class FileWatcher
+
+    changedFiles: null
+
+    constructor: (@tasks, options = {}) ->
+      options.debounceDelay ?= 200
+      @resetChangedFiles()
+      @onChange = grunt.util._.debounce(@onChange, options.debounceDelay)
+
+      grunt.event.on 'watch', (action, filepath) =>
+        @changedFiles[filepath] = action
+        @onChange()
+
+    resetChangedFiles: ->
+      @changedFiles = Object.create(null)
+
+    onChange: =>
+      changedFilepaths = Object.keys(@changedFiles)
+      @limitTaskToFiles(taskName, changedFilepaths) \
+          for taskName in @tasks
+      @resetChangedFiles()
+
+    limitTaskToFiles: (taskName, filepaths) ->
+      filesConfig = "#{taskName}.files.0"
+      cwd = grunt.config.get("#{filesConfig}.cwd")
+      grunt.config("#{filesConfig}.src", @relativePaths(cwd, filepaths))
+
+    relativePaths: (prefix, filepaths) ->
+      prefix += '/'
+      return (s.replace(prefix, '') for s in filepaths \
+          when s.indexOf(prefix) is 0)
+
+
+  new FileWatcher ['coffee.src', 'coffee.test']
+
+
   grunt.initConfig do ->
     dirs =
-      javascript: 'src/js'
+      javascript: '{src,test}/js'
+      js_src: 'src/js'
     patterns =
-      coffeescript: 'src/**/*.coffee'
+      coffeescript: "#{dirs.js_src}/**/*.coffee"
       javascript: "#{dirs.javascript}/**/*.js"
       html: 'example/**/*.html'
 
     pkg: grunt.file.readJSON('package.json')
 
     coffee:
-      options:
-        sourceMap: true
-      glob_to_multiple:
-        expand: true
-        flatten: false
-        cwd: '.'
-        src: ["#{dirs.javascript}/**/*.coffee"]
-        dest: '.'
-        ext: '.js'
+      src:
+        files: [
+          expand: true
+          cwd: 'src/js'
+          src: '**/*.coffee'
+          dest: 'src/js'
+          ext: '.js'
+        ]
+        options:
+          sourceMap: true
+
+      test:
+        files: [
+          expand: true
+          cwd: 'test/js'
+          src: '**/*.coffee'
+          dest: 'test/js'
+          ext: '.js'
+        ]
+        options:
+          sourceMap: true
 
     coffeelint:
       options: grunt.file.readJSON('coffeelint.json')
@@ -29,30 +81,31 @@ module.exports = (grunt) ->
       dev:
         options:
           port: 9001
-          keepalive: true
+          #keepalive: true
           livereload: true
 
-    open:
-      all:
-        path: 'http://localhost:<%= connect.dev.options.port%>'
-        app: 'Google Chrome'
-
     uglify:
-
-      my_target:
+      dist:
         files:
           'spindle-min.js': ['spindle.js']
 
     watch:
-      coffee:
-        files: [patterns.coffeescript]
-        tasks: ['coffee']
+      options:
+        livereload: true
+
+      coffee_src:
         options:
-          nospawn: true
-          livereload: true
+          spawn: false
+        files: ['src/js/**/*.coffee']
+        tasks: ['coffee:src']
+
+      coffee_test:
+        options:
+          spawn: false
+        files: ['test/js/**/*.coffee']
+        tasks: ['coffee:test']
+
       livereload:
-        options:
-          livereload: true
         files: [
           patterns.javascript,
           patterns.html,
@@ -61,7 +114,7 @@ module.exports = (grunt) ->
     requirejs:
       compile:
         options: do ->
-          baseUrl = dirs.javascript
+          baseUrl = dirs.js_src
           optimize = false
 
           baseUrl: baseUrl
@@ -96,30 +149,13 @@ module.exports = (grunt) ->
     clean: ["#{dirs.javascript}/**/*.{js,js.map}"]
 
 
-  # Based on:
-  # https://github.com/gruntjs/grunt-contrib-watch#compiling-files-as-needed
-  changedFiles = Object.create(null)
-  onChange = grunt.util._.debounce ->
-    filepaths = Object.keys(changedFiles)
-
-    # Selectively compile changed CoffeeScript files
-    cwd = grunt.config 'coffee.glob_to_multiple.cwd'
-    filepathsRelative = grunt.util._.map filepaths, (s) ->
-      s.replace "#{cwd}/", ''
-    grunt.config 'coffee.glob_to_multiple.src', filepathsRelative
-
-    changedFiles = Object.create(null)
-  , 200
-  grunt.event.on 'watch', (action, filepath) ->
-    changedFiles[filepath] = action
-    onChange()
-
-
   grunt.registerTask 'server', [
     # Open before connect because connect uses keepalive at the moment
     # so anything after connect wouldn't run
-    'open',
-    'connect',
+    'clean'
+    'coffee'
+    'connect'
+    'watch'
   ]
 
   grunt.registerTask 'buildjs', ['clean', 'coffee', 'requirejs']
