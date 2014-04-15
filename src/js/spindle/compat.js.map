@@ -1,7 +1,7 @@
 {
   "version": 3,
   "file": "compat.js",
-  "sourceRoot": "../../coffee/spindle/",
+  "sourceRoot": "",
   "sources": [
     "compat.coffee"
   ],

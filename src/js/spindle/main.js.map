@@ -1,7 +1,7 @@
 {
   "version": 3,
   "file": "main.js",
-  "sourceRoot": "../../coffee/spindle/",
+  "sourceRoot": "",
   "sources": [
     "main.coffee"
   ],

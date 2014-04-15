@@ -1,7 +1,7 @@
 {
   "version": 3,
   "file": "consolehandler.js",
-  "sourceRoot": "../../../coffee/spindle/handlers/",
+  "sourceRoot": "",
   "sources": [
     "consolehandler.coffee"
   ],

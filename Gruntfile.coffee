@@ -2,11 +2,10 @@ module.exports = (grunt) ->
 
   grunt.initConfig do ->
     dirs =
-      coffeescript: 'src/coffee'
-      javascriptGenerated: 'src/js'
+      javascript: 'src/js'
     patterns =
       coffeescript: 'src/**/*.coffee'
-      javascriptGenerated: "#{dirs.javascriptGenerated}/**/*.js"
+      javascript: "#{dirs.javascript}/**/*.js"
       html: 'example/**/*.html'
 
     pkg: grunt.file.readJSON('package.json')
@@ -17,14 +16,14 @@ module.exports = (grunt) ->
       glob_to_multiple:
         expand: true
         flatten: false
-        cwd: dirs.coffeescript
-        src: ['**/*.coffee']
-        dest: dirs.javascriptGenerated
+        cwd: '.'
+        src: ["#{dirs.javascript}/**/*.coffee"]
+        dest: '.'
         ext: '.js'
 
     coffeelint:
       options: grunt.file.readJSON('coffeelint.json')
-      app: ["#{dirs.coffeescript}/**/*.coffee"]
+      app: ["#{dirs.javascript}/**/*.coffee"]
 
     connect:
       dev:
@@ -55,14 +54,14 @@ module.exports = (grunt) ->
         options:
           livereload: true
         files: [
-          patterns.javascriptGenerated,
+          patterns.javascript,
           patterns.html,
         ]
 
     requirejs:
       compile:
         options: do ->
-          baseUrl = dirs.javascriptGenerated
+          baseUrl = dirs.javascript
           optimize = false
 
           baseUrl: baseUrl
@@ -94,8 +93,8 @@ module.exports = (grunt) ->
               contents = contents.replace(regex, "$1#{prefix}$2")
             return contents
 
+    clean: ["#{dirs.javascript}/**/*.{js,js.map}"]
 
-    clean: [dirs.javascriptGenerated]
 
   # Based on:
   # https://github.com/gruntjs/grunt-contrib-watch#compiling-files-as-needed

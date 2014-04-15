@@ -1,7 +1,7 @@
 {
   "version": 3,
   "file": "base.js",
-  "sourceRoot": "../../../coffee/spindle/handlers/",
+  "sourceRoot": "",
   "sources": [
     "base.coffee"
   ],
