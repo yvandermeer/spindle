@@ -125,12 +125,3 @@ module.exports = (grunt) ->
   grunt.registerTask 'buildjs', ['clean', 'coffee', 'requirejs']
 
   grunt.registerTask 'build', ['buildjs', 'uglify']
-
-  grunt.loadNpmTasks 'grunt-coffeelint'
-  grunt.loadNpmTasks 'grunt-contrib-clean'
-  grunt.loadNpmTasks 'grunt-contrib-coffee'
-  grunt.loadNpmTasks 'grunt-contrib-connect'
-  grunt.loadNpmTasks 'grunt-contrib-requirejs'
-  grunt.loadNpmTasks 'grunt-contrib-uglify'
-  grunt.loadNpmTasks 'grunt-contrib-watch'
-  grunt.loadNpmTasks 'grunt-open'
