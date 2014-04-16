@@ -1,21 +1,21 @@
 define (require) ->
-  #sinonChai = require 'sinon-chai'
+  sinonChai = require 'sinon-chai'
 
   TestRunner = require 'sugarspoon/main'
-  #BaseTestConfiguration = require 'sugarspoon/model/configuration'
+  BaseTestConfiguration = require 'sugarspoon/model/configuration'
 
   tests = require './main'
 
 
-  #class TestConfiguration extends BaseTestConfiguration
+  class TestConfiguration extends BaseTestConfiguration
 
-  #  configure: ->
-  #    super
-  #    @chai.use(sinonChai)
+    configure: ->
+      super
+      @chai.use(sinonChai)
 
 
   runner = new TestRunner
-    #config: new TestConfiguration
+    config: new TestConfiguration
 
 
   runner.run(tests)
