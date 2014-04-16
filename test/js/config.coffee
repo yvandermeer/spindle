@@ -19,6 +19,8 @@ require.config
     'squire': "#{vendor}squire/src/Squire"
     'sugarspoon': "#{vendor}sugarspoon/src/js"
 
+    'spec/sugarspoon': "#{vendor}sugarspoon/test/js/spec"
+
     'template': '../handlebars'
 
   shim:

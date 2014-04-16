@@ -1,6 +1,7 @@
 define (require) ->
   _ = require 'underscore'
   baseTest = require 'sugarspoon/util/base'
+  -> \
 
 
   describe 'LogLevel', ->

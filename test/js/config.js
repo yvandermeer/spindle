@@ -17,6 +17,7 @@
         'sinon-chai': "" + vendor + "sinon-chai/lib/sinon-chai",
         'squire': "" + vendor + "squire/src/Squire",
         'sugarspoon': "" + vendor + "sugarspoon/src/js",
+        'spec/sugarspoon': "" + vendor + "sugarspoon/test/js/spec",
         'template': '../handlebars'
       };
     })(),
